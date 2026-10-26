@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+*.pyc
+.env
+*.db
+secure_storage/*
+!secure_storage/.gitkeep

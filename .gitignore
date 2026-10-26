@@ -1,0 +1,55 @@
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node dependencies and builds
+node_modules/
+dist/
+build/
+.vite/
+coverage/
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Uploaded and encrypted user files
+backend/secure_storage/
+secure_storage/
+uploads/
+storage/
+
+# Local logs and temporary files
+*.log
+*.tmp
+*.bak
+*.backup
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local test outputs
+htmlcov/
+.coverage
