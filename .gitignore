@@ -53,3 +53,5 @@ Thumbs.db
 # Local test outputs
 htmlcov/
 .coverage
+# Exclude duplicate nested project
+/vaultshare-full-project/

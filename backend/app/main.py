@@ -48,3 +48,29 @@ app.include_router(admin.router)
 @app.get("/health")
 def health():
     return {"status": "ok", "env": settings.env}
+
+
+# Production SPA hosting. API routes are registered above, so these
+# catch-all routes only serve frontend paths such as /login or /dashboard.
+if settings.env == "production":
+    from pathlib import Path
+    from fastapi.responses import FileResponse
+    from fastapi.staticfiles import StaticFiles
+
+    _dist = Path(__file__).resolve().parents[2] / "frontend" / "dist"
+    if not (_dist / "index.html").is_file():
+        raise RuntimeError("Production frontend build missing")
+    app.mount("/assets", StaticFiles(directory=str(_dist / "assets")), name="assets")
+
+    @app.get("/", include_in_schema=False)
+    def serve_root():
+        return FileResponse(_dist / "index.html")
+
+    @app.get("/{frontend_path:path}", include_in_schema=False)
+    def serve_spa(frontend_path: str):
+        if frontend_path.startswith(("auth/", "files/", "admin/", "api/")):
+            return JSONResponse(status_code=404, content={"detail": "Not found"})
+        requested = (_dist / frontend_path).resolve()
+        if requested.is_relative_to(_dist.resolve()) and requested.is_file():
+            return FileResponse(requested)
+        return FileResponse(_dist / "index.html")
